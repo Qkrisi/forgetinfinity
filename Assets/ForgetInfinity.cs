@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -76,7 +76,7 @@ public class ForgetInfinity : MonoBehaviour {
 	}
 
 	void BeginForgetting() {
-		Debug.Log("[Forget Infinity] Module activated...! Let's forget!");
+		Debug.Log("[Forget Infinity #{0}] Module activated...! Let's forget!");
 		canForget = true;
 		updateScreen(new[]{ 0, 0, 0, 0, 0 });
 	}
@@ -103,13 +103,13 @@ public class ForgetInfinity : MonoBehaviour {
 	}
 
 	void NextStage() {
-		Debug.Log("[Forget Infinity] advancing stage!");
+		Debug.Log("[Forget Infinity #{0}] advancing stage!");
 		var rand = GenerateRandom();
 		stages.Add(rand);
 		stagePtr++;
 		updateScreen(rand.ToArray());
-		Debug.Log("[Forget Infinity] we are now on stage " + stagePtr.ToString());
-		Debug.Log("[Forget Infinity] next stage is: " + ListString(rand));
+		Debug.Log("[Forget Infinity #{0}] we are now on stage " + stagePtr.ToString());
+		Debug.Log("[Forget Infinity #{0}] next stage is: " + ListString(rand));
 	}
 
 	void CheckForNewSolves() {
@@ -122,7 +122,7 @@ public class ForgetInfinity : MonoBehaviour {
 		var solvables = Info.GetSolvableModuleNames().Where(a => !ignoredModules.Contains (a));
 		var list1 = Info.GetSolvedModuleNames().Where(a => solvables.Contains(a));
 		if (list1.Count() >= solvables.Count() && !firstSolve) {
-			Debug.Log("[Forget Infinity] all non-ignored solvables solved. activating boss mode.");
+			Debug.Log("[Forget Infinity #{0}] all non-ignored solvables solved. activating boss mode.");
 			bossMode = true;
 			updateScreen(new[] { 0, 0, 0, 0, 0 });
 			return;
@@ -142,13 +142,13 @@ public class ForgetInfinity : MonoBehaviour {
     void Submit() {
 		SubmitButton.AddInteractionPunch();
         if (!bossMode) {
-			Debug.Log("[Forget Infinity] boss mode not active. Strike! (submit button)");
+			Debug.Log("[Forget Infinity #{0}] boss mode not active. Strike! (submit button)");
 			Module.HandleStrike();
 			return;
 		}
         if (solveMode)
         {
-            Debug.Log("[Forget Infinity] Solve mode detected! not submitting!");
+            Debug.Log("[Forget Infinity #{0}] Solve mode detected! not submitting!");
             solveMode = false;
             StringBuilder sb = new StringBuilder(); // base 5
             for (int i=0; i<5; i++)
@@ -161,7 +161,7 @@ public class ForgetInfinity : MonoBehaviour {
                 sb.Append(j.ToString());
             }
             var dec = ConvertFromBase5(sb.ToString());
-            Debug.Log("[Forget Infinity] input is " + sb.ToString() + ", in base 10 that's " + dec);
+            Debug.Log("[Forget Infinity #{0}] input is " + sb.ToString() + ", in base 10 that's " + dec);
             if (stages.Count() > dec && dec >= 0)
             {
                 updateScreen(stages[dec].ToArray());
@@ -207,7 +207,7 @@ public class ForgetInfinity : MonoBehaviour {
 		Debug.Log("stage count = " + stages.Count());
 		for (int i = 0; i < 5; i++) {
 			if (code [i] != stg[i]) {
-				Debug.Log("[Forget Infinity] Code is different from the expected input of " + ListString(stg) + ". Strike!");
+				Debug.Log("[Forget Infinity #{0}] Code is different from the expected input of " + ListString(stg) + ". Strike!");
 				Module.HandleStrike();
 				Reset(true);
                 solveStagePtr = 0;
@@ -215,7 +215,7 @@ public class ForgetInfinity : MonoBehaviour {
 			}
 		}
 		if (stages.Count()-1 <= solveStagePtr) {
-            Debug.Log("[Forget Infinity] All codes are correct! Solve!");
+            Debug.Log("[Forget Infinity #{0}] All codes are correct! Solve!");
 			solved = true;
 			Module.HandlePass();
 			Screen.text = "XXXXX";
@@ -243,7 +243,7 @@ public class ForgetInfinity : MonoBehaviour {
 		if (solved)
 			return;
 		if (!bossMode) {
-			Debug.Log("[Forget Infinity] boss mode not active. Strike! (button "+button.ToString()+")");
+			Debug.Log("[Forget Infinity #{0}] boss mode not active. Strike! (button "+button.ToString()+")");
 			Module.HandleStrike();
 			return;
 		}
@@ -285,13 +285,13 @@ public class ForgetInfinity : MonoBehaviour {
 		if (solved)
 			return;
 		if (!bossMode) {
-			Debug.Log("[Forget Infinity] boss mode not active. Strike! (reset button)");
+			Debug.Log("[Forget Infinity #{0}] boss mode not active. Strike! (reset button)");
 			Module.HandleStrike();
 			return;
 		}
         if (solveMode && !fromSubmit)
         {
-            Debug.Log("[Forget Infinity] reset pushed in solve mode, adding 0 to code");
+            Debug.Log("[Forget Infinity #{0}] reset pushed in solve mode, adding 0 to code");
             if (this.codeIndex == this.code.Length)
                 return;
             if (this.codeIndex < 5)
@@ -308,7 +308,7 @@ public class ForgetInfinity : MonoBehaviour {
         }
         if (codeDigits == 5 && !fromSubmit)
         {
-            Debug.Log("[Forget Infinity] going into solve mode");
+            Debug.Log("[Forget Infinity #{0}] going into solve mode");
             solveMode = true;
             Screen.color = new UnityEngine.Color(0, 255, 0);
             return;
